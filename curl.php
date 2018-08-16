@@ -10,5 +10,5 @@
     $resp = curl_exec($curl);
     echo $resp."\n";
     echo "CURL: ".$url;
-    curl_close($curl);
+    curl_close($curl); 
 ?>
