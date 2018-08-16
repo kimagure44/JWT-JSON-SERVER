@@ -3,6 +3,7 @@ const FS = require('fs');
 const bodyParser = require('body-parser');
 const jsonServer = require('json-server');
 const JWT = require('jsonwebtoken');
+const middlewares = jsonServer.defaults()
 
 // Servidor Express
 const server = jsonServer.create();
@@ -14,32 +15,33 @@ const router = jsonServer.router('./db.json');
 const userdb = JSON.parse(FS.readFileSync('./03f996214fba4a1d05a68b18fece8e71.json', 'UTF-8'));
 
 // Middlewares predeterminados (logger, static, cors y no-cache)
-server.use(jsonServer.defaults());
+server.use(middlewares)
+
+// Parseo del body
+server.use(jsonServer.bodyParser);
 
 // Configuración TOKEN y duración
 const SECRET_KEY = 'zxcasdqwe098765';
 const expiresIn = '1h';
 
 // Crear un TOKEN desde un payload 
-function createToken(payload) {
-    return JWT.sign(payload, SECRET_KEY, { expiresIn })
-}
+createToken = (payload) => JWT.sign(payload, SECRET_KEY, { expiresIn });
+
 // Verificar el TOKEN 
-function verifyToken(token) {
-    return JWT.verify(token, SECRET_KEY, (err, decode) => decode !== undefined ? decode : err)
-}
+verifyToken = (token) => JWT.verify(token, SECRET_KEY, (err, decode) => decode !== undefined ? decode : err);
+
 // Comprobamos si el usuario existe en nuestra 'base de datos'
-function isAuthenticated({ email, password }) {
-    return userdb.users.findIndex(user => user.email === email && user.password === password) !== - 1;
-}
+isAuthenticated = ({ email, password }) => userdb.users.findIndex(user => user.email === email && user.password === password) !== - 1;
 
 // Creamos un ENDPOINT para comprobar si el usuario existe y poder crear y enviar un TOKEN
 server.post('/auth/login', (req, res) => {
+    debugger;
     const { email, password } = req.body;
     if (isAuthenticated({ email, password }) === false) {
         const status = 401;
         const message = 'Contraseña y/o password incorrectos';
         res.status(status).json({ status, message })
+        console.log(message);
         return;
     }
     const access_token = createToken({ email, password });
@@ -54,6 +56,7 @@ server.use(/^(?!\/auth).*$/, (req, res, next) => {
         const status = 401;
         const message = 'Header con autorización incorrecta';
         res.status(status).json({ status, message });
+        console.log(message);
         return;
     }
     try {
@@ -63,6 +66,7 @@ server.use(/^(?!\/auth).*$/, (req, res, next) => {
         const status = 401;
         const message = 'Error: TOKEN de acceso no válido';
         res.status(status).json({ status, message });
+        console.log(message);
     }
 })
 server.use(router);
