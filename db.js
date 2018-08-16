@@ -10,4 +10,4 @@ for (let id = 0; id < 1000; id++) {
     });
 }
 
-console.log(JSON.stringify(data));
+console.log(JSON.stringify(data)); 

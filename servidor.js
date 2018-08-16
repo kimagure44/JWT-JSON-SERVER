@@ -69,4 +69,4 @@ server.use(router);
 
 server.listen(3000, () => {
     console.log('API REST FUNCIONANDO')
-})
+});

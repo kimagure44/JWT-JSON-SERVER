@@ -5,7 +5,7 @@
     curl_setopt_array($curl, array(
         CURLOPT_RETURNTRANSFER => 1,
         CURLOPT_URL => $url,
-        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request '
     ));
     $resp = curl_exec($curl);
     echo $resp."\n";
