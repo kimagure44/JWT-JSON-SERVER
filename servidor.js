@@ -35,7 +35,6 @@ isAuthenticated = ({ email, password }) => userdb.users.findIndex(user => user.e
 
 // Creamos un ENDPOINT para comprobar si el usuario existe y poder crear y enviar un TOKEN
 server.post('/auth/login', (req, res) => {
-    debugger;
     const { email, password } = req.body;
     if (isAuthenticated({ email, password }) === false) {
         const status = 401;
