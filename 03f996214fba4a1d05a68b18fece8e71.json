@@ -1,0 +1,16 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "ivan",
+            "email": "ivan@dominio.com",
+            "password": "qwerty1234"
+        },
+        {
+            "id": 2,
+            "name": "rafael",
+            "email": "rafael@dominio.es",
+            "password": "asdfgh5678"
+        }
+    ]
+}
